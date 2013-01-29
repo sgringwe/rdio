@@ -1,0 +1,22 @@
+Source: rdio
+Section: sound
+Priority: optional
+Maintainer: Scott Ringwelski <sgringwe@mtu.edu>
+Build-Depends: debhelper (>= 7.0.50~),
+               valac-0.18 (>= 0.17.7),
+               cmake (>= 2.6),
+               libgtk-3-dev (>= 3.0),
+               libglib2.0-dev,
+               libnotify-dev (>= 0.5.0),
+               libdbus-glib-1-dev,
+               libindicate-dev (>= 0.6),
+               libdbusmenu-gtk3-dev,
+               libunity-dev (>= 5.10)
+Standards-Version: 3.9.2
+Homepage: https://github.com/sgringwe/rdio
+
+Package: rdio
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Pre-Depends: dpkg (>= 1.15.6)
+Description: A simple native implementation for Rdio music services

@@ -1,0 +1,2 @@
+?package(rdio):needs="X11" section="Applications/Sound" \
+  title="Rdio" command="/usr/bin/rdio"

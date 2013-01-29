@@ -1,0 +1,30 @@
+beatbox (0.7) precise; urgency=low
+
+  * New version: 'Everlong'.
+
+ -- Scott <scott@scott-Latitude-E5520>  Sat, 13 Oct 2012 16:07:24 -0400
+
+beatbox (0.6) precise; urgency=low
+
+  * New version: Dear Rosemary
+
+ -- Scott <scott@scott-Latitude-E5520>  Thu, 09 Aug 2012 23:25:34 -0400
+
+beatbox (0.5-0) precise; urgency=low
+
+  * New upstream release
+
+ -- Scott "sgringwe" Ringwelski <sgringwe@mtu.edu>  Fri, 15 Jun 2012 16:37:59 +0400
+ 
+beatbox (0.4-0) precise; urgency=low
+
+  * New upstream release
+
+ -- Sergey "Shnatsel" Davidoff <shnatsel@gmail.com>  Wed, 22 Feb 2012 18:18:59 +0400
+
+beatbox (0.1-0) oneiric; urgency=low
+
+  * Initial release
+
+ -- Sergey "Shnatsel" Davidoff <shnatsel@gmail.com>  Tue, 01 Nov 2011 20:29:23 +0300
+

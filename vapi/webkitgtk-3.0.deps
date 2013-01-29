@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta content="Loggerhead/1.18.1 Python/2.6.5 Bazaar/2.5.1 Paste/1.7.2 PasteDeploy/1.3.3 SimpleTAL/4.1 Pygments/1.4 simplejson/2.1.3" name="generator" />
+<title>~vcs-imports/midori/master : contents of midori/webkitgtk-3.0.deps at revision 5685</title>
+<link href="/static/css/global.css" rel="stylesheet" />
+<link href="/static/images/favicon.png" rel="shortcut icon" />
+
+<script type="text/javascript">
+var global_path = '/~vcs-imports/midori/master/';
+var collapsed_icon_path = '/static/images/treeCollapsed.png';
+var expanded_icon_path = '/static/images/treeExpanded.png';
+</script>
+<script src="/static/javascript/yui/build/yui/yui-min.js" type="text/javascript"></script>
+<script src="/static/javascript/yui/build/oop/oop-min.js" type="text/javascript"></script>
+<script src="/static/javascript/yui/build/event/event-min.js" type="text/javascript"></script>
+<script src="/static/javascript/yui/build/attribute/attribute-min.js" type="text/javascript"></script>
+<script src="/static/javascript/yui/build/base/base-min.js" type="text/javascript"></script>
+<script src="/static/javascript/yui/build/dom/dom-min.js" type="text/javascript"></script>
+<script src="/static/javascript/yui/build/node/node-min.js" type="text/javascript"></script>
+<script src="/static/javascript/yui/build/anim/anim-min.js" type="text/javascript"></script>
+<script src="/static/javascript/yui/build/io/io-base-min.js" type="text/javascript"></script>
+<script src="/static/javascript/custom.js" type="text/javascript"></script>
+
+<link href="/static/css/view.css" media="all" type="text/css" rel="stylesheet" />
+<link href="/static/css/highlight.css" media="all" type="text/css" rel="stylesheet" />
+
+</head>
+<body class="public">
+
+
+
+<div class="black-link">
+<a href="https://code.launchpad.net/~vcs-imports/midori/master">
+← Back to branch summary
+</a>
+</div>
+
+
+<h1 class="branch-name">
+~vcs-imports/midori/master
+</h1>
+
+<ul id="menuTabs">
+
+
+<li><a href="/~vcs-imports/midori/master/changes" title="Changes">Changes</a></li>
+<li><a href="/~vcs-imports/midori/master/files" title="Files" id="on">Files</a></li>
+
+</ul>
+
+<div id="loggerheadCont">
+<div id="search_terms"></div>
+
+<div id="breadcrumbs">
+
+<a href="https://code.launchpad.net/~vcs-imports/midori/master">~vcs-imports/midori/master</a>
+
+
+<span>: <span class="breadcrumb">
+/<a href="/~vcs-imports/midori/master/files/5685/midori">midori</a>/webkitgtk-3.0.deps
+</span> (revision 5685)</span>
+</div>
+
+<div>
+
+<ul id="submenuTabs">
+<li id="first">
+<a href="/~vcs-imports/midori/master/files/5685">browse files</a>
+</li>
+<li>
+<a href="/~vcs-imports/midori/master/annotate/head:/midori/webkitgtk-3.0.deps">view with revision information</a>
+</li>
+
+<li>
+<a href="/~vcs-imports/midori/master/revision/5685">view revision</a>
+</li>
+<li>
+<a href="/~vcs-imports/midori/master/changes?filter_file_id=midori/webkitgtk-3.0.deps">view changes to this file</a>
+</li>
+<li id="last">
+<a href="/~vcs-imports/midori/master/download/head:/midori/webkitgtk-3.0.deps/webkitgtk-3.0.deps">download file</a>
+</li>
+</ul>
+<div class="view">
+<table id="logentries">
+
+<tr>
+<td class="viewLine">
+<pre><a id="L1" href="#L1">1</a>
+<a id="L2" href="#L2">2</a>
+<a id="L3" href="#L3">3</a>
+<a id="L4" href="#L4">4</a>
+<a id="L5" href="#L5">5</a>
+<a id="L6" href="#L6">6</a>
+</pre>
+</td>
+<td class="viewCont">
+<pre><span class="pyg-n">atk</span>
+<span class="pyg-n">gio</span><span class="pyg-o">-</span>2<span class="pyg-p">.</span>0
+<span class="pyg-n">cairo</span>
+<span class="pyg-n">pango</span>
+<span class="pyg-n">gdk</span><span class="pyg-o">-</span><span class="pyg-n">pixbuf</span><span class="pyg-o">-</span>2<span class="pyg-p">.</span>0
+<span class="pyg-n">libsoup</span><span class="pyg-o">-</span>2<span class="pyg-p">.</span>4
+</pre>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<p id="footer" class="fl">Loggerhead 1.18.1 is a web-based interface for <a href="http://bazaar-vcs.org/">Bazaar</a> branches</p>
+</div>
+</body>
+</html>

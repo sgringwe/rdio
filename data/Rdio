@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Rdio
+GenericName=Music Player
+X-GNOME-FullName=Rdio Music Player
+X-GNOME-Gettext-Domain=rdio
+Comment=Listen to music using Rdio web service.
+Exec=rdio
+Icon=rdio
+Terminal=false
+Categories=Audio;Music;Player;GNOME;GTK;
+MimeType=x-content/audio-player;
+StartupNotify=true
