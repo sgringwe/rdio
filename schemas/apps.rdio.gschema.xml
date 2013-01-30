@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <enum id="apps.rdio.WindowStates">
+    <value nick="Normal" value="0" />
+    <value nick="Maximized" value="1" />
+    <value nick="Fullscreen" value="2" />
+  </enum>
+  
+  <schema path="/apps/rdio/" id="apps.rdio" gettext-domain="rdio">
+    <key type="i" name="window-width">
+      <default>1100</default>
+      <summary>Window width</summary>
+      <description>Window width</description>
+    </key>
+    <key type="i" name="window-height">
+      <default>600</default>
+      <summary>Window height</summary>
+      <description>Window height</description>
+    </key>
+    <key name="window-state" enum="apps.rdio.WindowStates">
+      <default>"Normal"</default>
+      <summary>The saved state of the window.</summary>
+      <description>The saved state of the window.</description>
+    </key>
+  </schema>
+</schemalist>

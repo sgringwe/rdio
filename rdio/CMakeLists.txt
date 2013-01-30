@@ -7,6 +7,7 @@ vala_precompile(VALA_C
     main.vala
     config.vala
     Rdio.vala
+    Settings.vala
     Window.vala
     CustomTitleBar.vala
     MediaKeyListener.vala

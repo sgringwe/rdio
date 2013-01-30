@@ -12,6 +12,8 @@ public class Rdio.Window : Gtk.Window {
   WebKit.WebView webview;
   Gtk.ScrolledWindow scrolled_window;
 
+  bool window_maximized;
+
   public Window (Gtk.Application gtk_app) {
     app = gtk_app;
 
@@ -49,6 +51,12 @@ public class Rdio.Window : Gtk.Window {
     setup_cookies ();
     webview.open ("https://www.rdio.com/signin/");
 
+    set_default_size (App.settings.window_width, App.settings.window_height);
+    if(App.settings.window_state == Settings.WindowState.MAXIMIZED) {
+      window_maximized = true;
+      maximize();
+    }
+
     show_all();
 
     mkl = new MediaKeyListener ();
@@ -62,9 +70,13 @@ public class Rdio.Window : Gtk.Window {
     sound_menu = new Rdio.SoundMenuIntegration();
     sound_menu.initialize();
     #endif
+
+
+    destroy.connect (on_quit);
+    window_state_event.connect(window_state_changed);
   }
 
-  private void setup_cookies () {
+  void setup_cookies () {
     var user_rdio_folder = GLib.File.new_for_path (GLib.Path.build_filename (Environment.get_user_data_dir (), "rdio"));
 
     // Make sure our config folder exists
@@ -84,5 +96,31 @@ public class Rdio.Window : Gtk.Window {
     var session = WebKit.get_default_session ();
     var cookiejar = new Soup.CookieJarText (user_rdio_cookie_file, false);
     session.add_feature (cookiejar);
+  }
+
+  bool window_state_changed(Gdk.EventWindowState event) {
+    if((event.changed_mask & (Gdk.WindowState.MAXIMIZED | Gdk.WindowState.FULLSCREEN)) == 0)
+      return false;
+    
+    window_maximized = ((event.new_window_state & (Gdk.WindowState.MAXIMIZED | Gdk.WindowState.FULLSCREEN)) != 0);
+      
+    return false;
+  }
+
+  void on_quit() {
+    // Stop listening to window state changes
+    window_state_event.disconnect(window_state_changed);
+
+    // Terminate Libnotify
+    // Notify.uninit ();
+    
+    // Save UI Information
+    if (window_maximized == true) {
+        App.settings.window_state = Settings.WindowState.MAXIMIZED;
+    }
+    if(!(window_maximized)) {
+        App.settings.window_width = get_allocated_width();
+        App.settings.window_height = get_allocated_height();
+    }
   }
 }
