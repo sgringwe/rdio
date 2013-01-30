@@ -16,12 +16,13 @@ pkg_check_modules(DEPS
     libsoup-2.4
     webkitgtk-3.0)
 
-pkg_check_modules(INDICATE indicate-0.7)
+pkg_check_modules(INDICATE dbusmenu-glib-0.4 indicate-0.7)
 if(${INDICATE_FOUND})
 set(ADD_PKG ${ADD_PKG}
-        Indicate-0.7)
+    Indicate-0.7
+    Dbusmenu-0.4)
 set(ADD_OPTIONS ${ADD_OPTIONS}
-        --define=HAVE_INDICATE)
+    --define=HAVE_INDICATE)
 message("-- Indicate enabled")
 else()
 message("-- Indicate disabled")

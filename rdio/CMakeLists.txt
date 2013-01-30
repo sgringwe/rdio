@@ -9,6 +9,9 @@ vala_precompile(VALA_C
     Rdio.vala
     Window.vala
     CustomTitleBar.vala
+    MediaKeyListener.vala
+    MPRIS.vala
+    SoundMenuIntegration.vala
     
 PACKAGES
     glib-2.0
@@ -17,6 +20,7 @@ PACKAGES
     libnotify
     libsoup-2.4
     webkitgtk-3.0
+    ${ADD_PKG}
 
 OPTIONS
     --vapidir=${CMAKE_SOURCE_DIR}/vapi
