@@ -49,7 +49,7 @@ public class Rdio.SoundMenuIntegration : GLib.Object {
     message ("name appeared");
 		server = Indicate.Server.ref_default();
 		server.set("type", "music.rdio");
-		server.set_desktop_file(GLib.Path.build_filename("/", "usr", "local", "share", "applications", "rdio.desktop", null));
+		server.set_desktop_file(GLib.Path.build_filename("/", Build.DATADIR, "applications", "rdio.desktop", null));
 		server.show();
 	}
 	
