@@ -41,12 +41,9 @@ public class Rdio.SoundMenuIntegration : GLib.Object {
 								BusNameWatcherFlags.NONE,
 								on_name_appeared,
 								on_name_vanished);
-    message ("!!!!!!!!!!!!!! Soundmenu initialized");
 	}
 	
 	private void on_name_appeared(DBusConnection conn, string name) {
-		/* set up the server to connect to music.rdio dbus */
-    message ("name appeared");
 		server = Indicate.Server.ref_default();
 		server.set("type", "music.rdio");
 		server.set_desktop_file(GLib.Path.build_filename("/", Build.DATADIR, "applications", "rdio.desktop", null));
@@ -54,7 +51,6 @@ public class Rdio.SoundMenuIntegration : GLib.Object {
 	}
 	
 	private void on_name_vanished(DBusConnection conn, string name) {
-    message ("name vanished");
 		if(server != null)
 			server.hide();
 	}

@@ -12,8 +12,8 @@ public class Rdio.Window : Gtk.Window {
   WebKit.WebView webview;
   Gtk.ScrolledWindow scrolled_window;
 
-  public Window (Gtk.Application app) {
-    this.app = app;
+  public Window (Gtk.Application gtk_app) {
+    app = gtk_app;
 
     // Window styling
     // set_app_paintable (true);
