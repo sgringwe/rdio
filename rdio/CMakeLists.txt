@@ -15,9 +15,9 @@ PACKAGES
     gtk+-3.0
     gio-2.0
     libnotify
-    gio-unix-2.0
+    libsoup-2.4
     webkitgtk-3.0
-    ${ADD_PKG}
+
 OPTIONS
     --vapidir=${CMAKE_SOURCE_DIR}/vapi
     --target-glib=2.32

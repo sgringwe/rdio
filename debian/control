@@ -11,7 +11,9 @@ Build-Depends: debhelper (>= 7.0.50~),
                libdbus-glib-1-dev,
                libindicate-dev (>= 0.6),
                libdbusmenu-gtk3-dev,
-               libunity-dev (>= 5.10)
+               libunity-dev (>= 5.10
+               libsoup2.4-dev (>= 2.25.2),
+               libwekitgtk-dev (>= 1.8.3))
 Standards-Version: 3.9.2
 Homepage: https://github.com/sgringwe/rdio
 

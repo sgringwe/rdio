@@ -105,6 +105,8 @@ namespace WebKit {
     public bool query_command_enabled (string command);
     public unowned WebKit.DOMElement query_selector (string selectors) throws GLib.Error;
     public unowned WebKit.DOMNodeList query_selector_all (string selectors) throws GLib.Error;
+    public string get_cookie () throws GLib.Error;
+    public void set_cookie (string cookie) throws GLib.Error;
     public WebKit.DOMHTMLCollection anchors { get; }
     public WebKit.DOMHTMLCollection applets { get; }
     public WebKit.DOMHTMLElement body { get; }

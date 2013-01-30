@@ -13,8 +13,8 @@ pkg_check_modules(DEPS
     gtk+-3.0
     gio-2.0
     libnotify
-    webkitgtk-3.0
-    gio-unix-2.0)
+    libsoup-2.4
+    webkitgtk-3.0)
 
 pkg_check_modules(INDICATE indicate-0.7)
 if(${INDICATE_FOUND})
