@@ -16,6 +16,7 @@ public class Rdio.CustomTitleBar : Gtk.EventBox {
             .rdio-custom-title-bar {
                 background-image: -gtk-gradient (linear, left top, left bottom,
                                              from (shade (@bg_color, 1.0)),
+                                             color-stop (0.65, alpha (shade (#e6e6e6, 1.1) , 0.8)),
                                              to (shade (#fff, 1.00)));
             }
         """;
