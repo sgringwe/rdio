@@ -1,1 +1,1 @@
-install(FILES rdio.desktop DESTINATION share/applications)
+install(FILES Rdio.desktop DESTINATION share/applications)

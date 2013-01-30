@@ -13,6 +13,7 @@ pkg_check_modules(DEPS
     gtk+-3.0
     gio-2.0
     libnotify
+    webkitgtk-3.0
     gio-unix-2.0)
 
 pkg_check_modules(INDICATE indicate-0.7)
@@ -53,7 +54,7 @@ set(VERSION_INFO "Pre-Release")
 
 add_definitions(-DGETTEXT_PACKAGE=\"${GETTEXT_PACKAGE}\")
 
-configure_file(${CMAKE_SOURCE_DIR}/config.vala.cmake ${CMAKE_SOURCE_DIR}/core/config.vala)
+configure_file(${CMAKE_SOURCE_DIR}/config.vala.cmake ${CMAKE_SOURCE_DIR}/rdio/config.vala)
 
 add_subdirectory(vapi)
 add_subdirectory(rdio)
