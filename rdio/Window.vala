@@ -52,7 +52,7 @@ public class Rdio.Window : Gtk.Window {
     webview.open ("https://www.rdio.com/signin/");
 
     set_default_size (App.settings.window_width, App.settings.window_height);
-    if(App.settings.window_state == Settings.WindowState.MAXIMIZED) {
+    if (App.settings.window_state == Settings.WindowState.MAXIMIZED) {
       window_maximized = true;
       maximize();
     }
@@ -99,11 +99,8 @@ public class Rdio.Window : Gtk.Window {
   }
 
   bool window_state_changed(Gdk.EventWindowState event) {
-    if((event.changed_mask & (Gdk.WindowState.MAXIMIZED | Gdk.WindowState.FULLSCREEN)) == 0)
-      return false;
-    
     window_maximized = ((event.new_window_state & (Gdk.WindowState.MAXIMIZED | Gdk.WindowState.FULLSCREEN)) != 0);
-      
+    
     return false;
   }
 
@@ -115,10 +112,11 @@ public class Rdio.Window : Gtk.Window {
     // Notify.uninit ();
     
     // Save UI Information
-    if (window_maximized == true) {
+    if (window_maximized) {
         App.settings.window_state = Settings.WindowState.MAXIMIZED;
     }
-    if(!(window_maximized)) {
+    else {
+        App.settings.window_state = Settings.WindowState.NORMAL;
         App.settings.window_width = get_allocated_width();
         App.settings.window_height = get_allocated_height();
     }
