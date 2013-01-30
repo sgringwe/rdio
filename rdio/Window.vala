@@ -43,15 +43,31 @@ public class Rdio.Window : Gtk.Window {
     settings.set_property ("enable-page-cache", true);
     webview.set_settings (settings);
 
-    // add a new persistent cookie jar
-    var session = WebKit.get_default_session ();
-    var cookiejar = new Soup.CookieJarText ("/home/scott/cookies.txt", false);
-    session.add_feature (cookiejar);
-
-
-
+    setup_cookies ();
     webview.open ("https://www.rdio.com/signin/");
 
     show_all();
+  }
+
+  private void setup_cookies () {
+    var user_rdio_folder = GLib.File.new_for_path (GLib.Path.build_filename (Environment.get_user_data_dir (), "rdio"));
+
+    // Make sure our config folder exists
+    if (!user_rdio_folder.query_exists ()) {
+      try {
+        user_rdio_folder.make_directory_with_parents (null);
+      }
+      catch (GLib.Error err) {
+        critical ("Could not create beatbox folder in data directory: %s\n", err.message);
+      }
+    }
+
+    // This is where cookie will be stored
+    var user_rdio_cookie_file = GLib.Path.build_filename (user_rdio_folder.get_path (), "cookies.dat");
+
+    // Set up webkit and soup to persist the cookies
+    var session = WebKit.get_default_session ();
+    var cookiejar = new Soup.CookieJarText (user_rdio_cookie_file, false);
+    session.add_feature (cookiejar);
   }
 }
