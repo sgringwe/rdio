@@ -54,16 +54,12 @@ public class Rdio.Window : Gtk.Window {
 
     show_all();
 
-    // webview.script_alert.connect (alerted);
     destroy.connect (on_quit);
     window_state_event.connect(window_state_changed);
+  }
 
-    // Timeout.add (5000, () => {
-    //     send_alert ("hi");
-
-
-    //     return false;
-    // });
+  public void initialize_events () {
+      App.middleware.changed.connect (song_changed);
   }
 
   void setup_cookies () {
@@ -88,13 +84,8 @@ public class Rdio.Window : Gtk.Window {
     session.add_feature (cookiejar);
   }
 
-  public void send_alert (string message) {
-      webview.execute_script ("alert('" + message + "');");
-  }
-
-  bool alerted (WebKit.WebFrame frame, string message) {
-      GLib.message ("Received alert %s", message);
-      return true;
+  void song_changed () {
+      set_title (App.middleware.title + " by " + App.middleware.artist + " on " + App.middleware.album);
   }
 
   bool window_state_changed(Gdk.EventWindowState event) {

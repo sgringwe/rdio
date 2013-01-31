@@ -42,7 +42,6 @@ public class Rdio.App : Gtk.Application {
     settings = new Rdio.Settings ();
     window = new Rdio.Window (this);
     middleware = new Rdio.Middleware (window.webview);
-
     mkl = new MediaKeyListener ();
 
     debug("Initializing MPRIS 2.0\n");
@@ -54,6 +53,8 @@ public class Rdio.App : Gtk.Application {
     sound_menu = new Rdio.SoundMenuIntegration();
     sound_menu.initialize();
     #endif
+
+    window.initialize_events ();
 
     window.destroy.connect (Gtk.main_quit);
     Gtk.main ();

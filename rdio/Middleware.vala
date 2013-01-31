@@ -46,6 +46,7 @@ public class Rdio.Middleware : GLib.Object {
 
         webview.script_alert.connect (alert);
 
+        // Poll for changes
         Timeout.add(1000, () => {
             webview.execute_script(JS);
             return true;
@@ -91,14 +92,11 @@ public class Rdio.Middleware : GLib.Object {
             parser.load_from_data (message, -1);
             var root = parser.get_root ().get_object ();
 
-            warning(message);
             var title = root.get_string_member("song");
             var album = root.get_string_member("album");
             var artist = root.get_string_member("artist");
             var playing = root.get_int_member("play_state") == 1;
             var album_art = root.get_string_member("album_art");
-
-            warning ("interpreted playing as %s", playing.to_string());
 
             // Find out if anything changed and send appropiate signals
             if (this.title != title || this.album != album || this.artist != artist) {
