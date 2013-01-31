@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2011-2012     Scott Ringwelski <sgringwe@mtu.edu>
+ * Copyright (c) 2011-2012	 Scott Ringwelski <sgringwe@mtu.edu>
  *
  * Originally Written by Scott Ringwelski for Rdio Music Player
  * Rdio Music Player: http://www.launchpad.net/beat-box
@@ -26,43 +26,43 @@
  */
 
 public class Rdio.Settings {
-    GLib.Settings settings;
+	GLib.Settings settings;
 
-    public enum WindowState {
-        NORMAL = 0,
-        MAXIMIZED = 1,
-        FULLSCREEN = 2
-    }
+	public enum WindowState {
+		NORMAL = 0,
+		MAXIMIZED = 1,
+		FULLSCREEN = 2
+	}
 
-    public Settings () {
-        settings = new GLib.Settings ("apps.rdio");
-    }
+	public Settings () {
+		settings = new GLib.Settings ("apps.rdio");
+	}
 
-    public int window_width {
-        get {
-            return settings.get_int ("window-width");
-        }
-        set {
-            settings.set_int ("window-width", value);
-        }
-    }
+	public int window_width {
+		get {
+			return settings.get_int ("window-width");
+		}
+		set {
+			settings.set_int ("window-width", value);
+		}
+	}
 
-    public int window_height {
-        get {
-            return settings.get_int ("window-height");
-        }
-        set {
-            settings.set_int ("window-height", value);
-        }
-    }
+	public int window_height {
+		get {
+			return settings.get_int ("window-height");
+		}
+		set {
+			settings.set_int ("window-height", value);
+		}
+	}
 
-    public WindowState window_state {
-        get {
-            return (WindowState) settings.get_enum ("window-state");
-        }
-        set {
-            settings.set_enum ("window-state", value);
-        }
-    }
+	public WindowState window_state {
+		get {
+			return (WindowState) settings.get_enum ("window-state");
+		}
+		set {
+			settings.set_enum ("window-state", value);
+		}
+	}
 }
 

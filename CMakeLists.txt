@@ -16,6 +16,7 @@ pkg_check_modules(DEPS
     json-glib-1.0
     webkitgtk-3.0)
 
+# Indicate is optional, but required for sound menu support
 pkg_check_modules(INDICATE dbusmenu-glib-0.4 indicate-0.7)
 if(${INDICATE_FOUND})
 set(ADD_PKG ${ADD_PKG}
@@ -28,6 +29,7 @@ else()
 message("-- Indicate disabled")
 endif()
 
+# Unity is required for libunity launchers
 pkg_check_modules(UNITY unity)
 if(${UNITY_FOUND})
 set(ADD_PKG ${ADD_PKG}
@@ -39,6 +41,7 @@ else()
 message("-- Unity disabled")
 endif()
 
+# Libnotify is not required but for notifications
 pkg_check_modules(LIBNOTIFY libnotify)
 if(${LIBNOTIFY_FOUND})
 set(ADD_PKG ${ADD_PKG}

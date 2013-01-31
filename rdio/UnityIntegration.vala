@@ -64,7 +64,7 @@ public class Rdio.UnityIntegration : GLib.Object {
 		App.middleware.changed.connect(playing_changed);
 		App.middleware.played.connect(playing_changed);
 		App.middleware.paused.connect(playing_changed);
-    App.middleware.notification_count_changed.connect (notification_count_changed);
+		App.middleware.notification_count_changed.connect (notification_count_changed);
 		
 		return true;
 	}
@@ -81,10 +81,10 @@ public class Rdio.UnityIntegration : GLib.Object {
 		App.middleware.next ();
 	}
 
-  void notification_count_changed (int count) {
-    entry.count = count;
-    entry.count_visible = (count > 0);
-  }
+	void notification_count_changed (int count) {
+		entry.count = count;
+		entry.count_visible = (count > 0);
+	}
 	
 	void playing_changed() {
 		string lbl = (App.middleware.playing) ? _("Pause") : _("Play");
