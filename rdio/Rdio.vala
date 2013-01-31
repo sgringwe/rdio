@@ -42,6 +42,10 @@ public class Rdio.App : Gtk.Application {
   public static Rdio.SoundMenuIntegration sound_menu { get; private set; }
   #endif
 
+  #if HAVE_LIBNOTIFY
+  public static Rdio.Notifier notifier { get; private set; }
+  #endif
+
   public App () {
     settings = new Rdio.Settings ();
     window = new Rdio.Window (this);
@@ -61,6 +65,10 @@ public class Rdio.App : Gtk.Application {
     #if HAVE_UNITY
     unity = new Rdio.UnityIntegration ();
     unity.initialize ();
+    #endif
+
+    #if HAVE_LIBNOTIFY
+    notifier = new Rdio.Notifier ();
     #endif
 
     window.initialize_events ();
