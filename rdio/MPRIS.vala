@@ -184,11 +184,11 @@ public class Rdio.MprisRoot : GLib.Object {
   }
 
   public void Quit() {
-    message ("TODO: Quit");
+    App.window.destroy ();
   }
   
   public void Raise() {
-    message ("TODO: Present");
+   App.window.present ();
   }
 }
 
@@ -214,12 +214,10 @@ public class Rdio.MprisPlayer : GLib.Object {
   public MprisPlayer(DBusConnection conn) {
     this.conn = conn;
     _metadata = new HashTable<string,Variant>(str_hash, str_equal);
-    
-    // App.library.medias_updated.connect(medias_updated);
-    // App.playback.media_played.connect(lm_media_played);
-    // App.playback.playback_stopped.connect(playback_stopped);
-    // App.playback.playback_played.connect(playing_changed);
-    // App.playback.playback_paused.connect(playing_changed);
+
+    App.middleware.changed.connect (song_changed);
+    App.middleware.played.connect (playing_changed);
+    App.middleware.paused.connect (playing_changed);
   }
   
   // MPRIS requires a mpris:trackid metadata item.
@@ -228,73 +226,47 @@ public class Rdio.MprisPlayer : GLib.Object {
   //   return new GLib.ObjectPath(id);
   // }
 
-  // private void fill_metadata(Rdio.Media s) {
-  //   string[] artistArray = {};
-  //   artistArray += s.artist;
-  //   string[] genreArray = {};
-  //   genreArray += s.genre;
+  private void fill_metadata() {
+    warning("filling up metadata now----- %s %s %s\n\n\n", App.middleware.title, App.middleware.artist, "album");
+    string[] artistArray = {};
+    artistArray += App.middleware.artist;
+    string[] genreArray = {};
+    genreArray += "";
 
-  //   _metadata.insert("mpris:trackid", get_trackid(s));
-  //   _metadata.insert("xesam:artist", artistArray);
-  //   _metadata.insert("xesam:album", s.album);
-  //   _metadata.insert("xesam:title", s.title);
-  //   _metadata.insert("xesam:genre", genreArray);
-    
-  //   string? album_art_path = App.covers.get_cached_album_art_path(App.covers.get_media_coverart_key(s));
-  //   if(album_art_path != null) {
-  //     var art_file = File.new_for_path(album_art_path);
-  //     if(art_file.query_exists()) {
-  //       _metadata.insert("mpris:artUrl", art_file.get_uri());
-  //     }
-  //   }
-    
-  //   _metadata.insert("mpris:length", App.playback.get_duration()/1000);
-  //   _metadata.insert("xesam:userRating", s.rating / 5.0);
-  // }
+    // _metadata.insert("mpris:trackid", 0);
+    _metadata.insert("xesam:artist", artistArray);
+    _metadata.insert("xesam:album", App.middleware.album);
+    _metadata.insert("xesam:title", App.middleware.title);
+    _metadata.insert("xesam:genre", genreArray);
+    _metadata.insert("mpris:artUrl", App.middleware.album_art);
+    // _metadata.insert("mpris:length", App.playback.get_duration()/1000);
+    // _metadata.insert("xesam:userRating", s.rating / 5.0);
+  }
   
-  // void medias_updated(Collection<Media> updates) {
-  //   if(!App.playback.media_active)
-  //     return;
-    
-  //   // Sure, we could look through all updates and see if current song
-  //   // is in there, but it's faster to just do the update
-  //   trigger_metadata_update();
-  // }
+  private void song_changed () {
+      fill_metadata ();
+      trigger_metadata_update ();
+  }
   
-  // private void playing_changed() {
-  //   trigger_metadata_update();
-  // }
-    
-  // private void playback_stopped(Media? wasPlaying) {
-  //   debug("Stopped playing");
-  //   trigger_metadata_update();
-  // }
+  private void playing_changed () {
+    trigger_metadata_update ();
+  }
   
-  // private void trigger_metadata_update() {
-  //   if(update_metadata_source != 0)
-  //     Source.remove(update_metadata_source);
+  private void trigger_metadata_update() {
+    if(update_metadata_source != 0)
+      Source.remove(update_metadata_source);
 
-  //   update_metadata_source = Timeout.add(300, () => {
-  //     //print("trigger_metadata_update %s\n", global.current_artist);
-  //     Variant variant = this.PlaybackStatus;
+    update_metadata_source = Timeout.add(300, () => {
+      //print("trigger_metadata_update %s\n", global.current_artist);
+      Variant variant = this.PlaybackStatus;
+      warning("Playing is %s", App.middleware.playing.to_string());
       
-  //     queue_property_for_notification("PlaybackStatus", variant);
-  //     queue_property_for_notification("Metadata", _metadata);
-  //     update_metadata_source = 0;
-  //     return false;
-  //   });
-  // }
-  
-  // void lm_media_played(Rdio.Media s, Rdio.Media? old) {
-  //   string[] artistArray = {};
-  //   artistArray += s.artist;
-  //   string[] genreArray = {};
-  //   genreArray += s.genre;
-    
-  //   fill_metadata(s);
-    
-  //   trigger_metadata_update();
-  // }
+      queue_property_for_notification("PlaybackStatus", variant);
+      queue_property_for_notification("Metadata", _metadata);
+      update_metadata_source = 0;
+      return false;
+    });
+  }
   
   private bool send_property_change() {
     if(changed_properties == null)
@@ -343,14 +315,10 @@ public class Rdio.MprisPlayer : GLib.Object {
   
   public string PlaybackStatus {
     owned get {
-      // if(App.playback.playing)
-      //   return "Playing";
-      // else if(!App.playback.playing && !App.playback.media_active)
-      //   return "Stopped";
-      // else if(!App.playback.playing)
-      //   return "Paused";
-      // else
-        return "Stopped";
+      if (App.middleware.playing)
+        return "Playing";
+      else
+        return "Paused";
     }
   }
   
@@ -461,25 +429,25 @@ public class Rdio.MprisPlayer : GLib.Object {
 
   public bool CanGoNext {
     get {
-      return true;
+      return App.middleware.playing;
     }
   }
   
   public bool CanGoPrevious {
     get {
-      return true;
+      return App.middleware.playing;
     }
   }
   
   public bool CanPlay {
     get {
-      return true;
+      return !App.middleware.playing;;
     }
   }
   
   public bool CanPause {
     get {
-      return true;
+      return App.middleware.playing;
     }
   }
   
@@ -498,23 +466,19 @@ public class Rdio.MprisPlayer : GLib.Object {
   public signal void Seeked(int64 Position);
   
   public void Next() {
-    // App.playback.request_next();
+    App.middleware.next ();
   }
   
   public void Previous() {
-    // App.playback.request_previous();
+    App.middleware.previous ();
   }
   
   public void Pause() {
-    // if(App.playback.playing)
-    //   App.playback.pause();
+    App.middleware.pause ();
   }
   
   public void PlayPause() {
-    // if(App.playback.playing)
-    //   App.playback.pause();
-    // else
-    //   App.playback.play();
+    App.middleware.playpause ();
   }
   
   public void Stop() {
@@ -522,8 +486,7 @@ public class Rdio.MprisPlayer : GLib.Object {
   }
   
   public void Play() {
-    // if(!App.playback.playing)
-    //   App.playback.play();
+    App.middleware.play ();
   }
   
   /*

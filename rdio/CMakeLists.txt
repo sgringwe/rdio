@@ -9,6 +9,7 @@ vala_precompile(VALA_C
     Rdio.vala
     Settings.vala
     Window.vala
+    Middleware.vala
     CustomTitleBar.vala
     MediaKeyListener.vala
     MPRIS.vala
@@ -20,6 +21,7 @@ PACKAGES
     gio-2.0
     libnotify
     libsoup-2.4
+    json-glib-1.0
     webkitgtk-3.0
     ${ADD_PKG}
 

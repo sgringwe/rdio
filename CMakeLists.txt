@@ -14,6 +14,7 @@ pkg_check_modules(DEPS
     gio-2.0
     libnotify
     libsoup-2.4
+    json-glib-1.0
     webkitgtk-3.0)
 
 pkg_check_modules(INDICATE dbusmenu-glib-0.4 indicate-0.7)

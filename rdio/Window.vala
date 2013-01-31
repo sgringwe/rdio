@@ -2,14 +2,9 @@ using Gtk;
 
 public class Rdio.Window : Gtk.Window {
   public static Gtk.Application app { get; private set; }
-  private Rdio.MediaKeyListener mkl;
-
-  #if HAVE_INDICATE
-  private Rdio.SoundMenuIntegration sound_menu;
-  #endif
 
   TopGradient titlebar;
-  WebKit.WebView webview;
+  public WebKit.WebView webview;
   Gtk.ScrolledWindow scrolled_window;
 
   bool window_maximized;
@@ -59,21 +54,16 @@ public class Rdio.Window : Gtk.Window {
 
     show_all();
 
-    mkl = new MediaKeyListener ();
-
-    debug("Initializing MPRIS 2.0\n");
-    var mpris = new Rdio.MPRIS();
-    mpris.initialize();
-
-    #if HAVE_INDICATE
-    debug("Initializing SoundMenu integration\n");
-    sound_menu = new Rdio.SoundMenuIntegration();
-    sound_menu.initialize();
-    #endif
-
-
+    // webview.script_alert.connect (alerted);
     destroy.connect (on_quit);
     window_state_event.connect(window_state_changed);
+
+    // Timeout.add (5000, () => {
+    //     send_alert ("hi");
+
+
+    //     return false;
+    // });
   }
 
   void setup_cookies () {
@@ -96,6 +86,15 @@ public class Rdio.Window : Gtk.Window {
     var session = WebKit.get_default_session ();
     var cookiejar = new Soup.CookieJarText (user_rdio_cookie_file, false);
     session.add_feature (cookiejar);
+  }
+
+  public void send_alert (string message) {
+      webview.execute_script ("alert('" + message + "');");
+  }
+
+  bool alerted (WebKit.WebFrame frame, string message) {
+      GLib.message ("Received alert %s", message);
+      return true;
   }
 
   bool window_state_changed(Gdk.EventWindowState event) {

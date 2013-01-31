@@ -30,15 +30,30 @@
 
 public class Rdio.App : Gtk.Application {
   public static Rdio.Window window { get; private set; }
-  // public static Rdio.Notifier notifier { get; private set; }
-  // public static Rdio.SoundMenu sound_menu { get; private set; }
+  public static Rdio.Middleware middleware { get; private set; }
   public static Rdio.Settings settings { get; private set; }
+  public static Rdio.MediaKeyListener mkl { get; private set; }
+
+  #if HAVE_INDICATE
+  public static Rdio.SoundMenuIntegration sound_menu { get; private set; }
+  #endif
 
   public App () {
     settings = new Rdio.Settings ();
     window = new Rdio.Window (this);
-    // sound_menu = new Rdio.SoundMenu ();
-    // notifier = new Rdio.Notifier ();
+    middleware = new Rdio.Middleware (window.webview);
+
+    mkl = new MediaKeyListener ();
+
+    debug("Initializing MPRIS 2.0\n");
+    var mpris = new Rdio.MPRIS();
+    mpris.initialize();
+
+    #if HAVE_INDICATE
+    debug("Initializing SoundMenu integration\n");
+    sound_menu = new Rdio.SoundMenuIntegration();
+    sound_menu.initialize();
+    #endif
 
     window.destroy.connect (Gtk.main_quit);
     Gtk.main ();

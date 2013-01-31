@@ -69,13 +69,13 @@ public class Rdio.MediaKeyListener : GLib.Object {
 			return;
 		
 		if(key == "Previous") {
-			message ("Click previous");
+			App.middleware.previous ();
 		}
 		else if(key == "Play") {
-			message ("TODO: Click play/pause");
+			App.middleware.playpause ();
 		}
 		else if(key == "Next") {
-			message ("TODO: Click next");
+			App.middleware.next ();
 		}
 		else {
 			warning("Unused key pressed: %s\n", key);
