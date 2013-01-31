@@ -85,7 +85,7 @@ public class Rdio.Window : Gtk.Window {
   }
 
   void song_changed () {
-      set_title (App.middleware.title + " by " + App.middleware.artist + " on " + App.middleware.album);
+      set_title (App.middleware.title + " " + _("by") + " " + App.middleware.artist + " " + _("on") + " " + App.middleware.album);
   }
 
   bool window_state_changed(Gdk.EventWindowState event) {
