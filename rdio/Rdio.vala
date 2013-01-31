@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2011-2012 Rdio Developers
+ * Copyright (c) 2011-2012 Scott Ringwelski <sgringwe@mtu.edu>
  *
  * Originally Written by Scott Ringwelski for Rdio Music Player
  * Rdio Music Player: http://www.github.com/sgringwe/rdio
@@ -18,13 +18,6 @@
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
- * 
- * The Rdio project hereby grant permission for non-gpl compatible GStreamer
- * plugins to be used and distributed together with GStreamer and Rdio. This
- * permission is above and beyond the permissions granted by the GPL license
- * Rdio is covered by.
- *
- * Authored by: Scott Ringwelski <sgringwe@mtu.edu>
  */
 
 

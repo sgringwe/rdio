@@ -17,11 +17,6 @@
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
- * 
- * The Rdio project hereby grant permission for non-gpl compatible GStreamer
- * plugins to be used and distributed together with GStreamer and Rdio. This
- * permission is above and beyond the permissions granted by the GPL license
- * Rdio is covered by.
  */
 using GLib;
  
