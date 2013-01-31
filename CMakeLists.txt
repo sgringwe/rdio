@@ -71,8 +71,6 @@ add_definitions(-DGETTEXT_PACKAGE=\"${GETTEXT_PACKAGE}\")
 
 configure_file(${CMAKE_SOURCE_DIR}/config.vala.cmake ${CMAKE_SOURCE_DIR}/rdio/config.vala)
 
-include(ValaPrecompile)
-
 add_subdirectory(vapi)
 add_subdirectory(rdio)
 add_subdirectory(data)
