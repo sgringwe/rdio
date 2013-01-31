@@ -6,16 +6,26 @@ public class Rdio.Middleware : GLib.Object {
     public string album;
     public string artist;
     public string album_art;
+    public int duration;
     public int position;
+    public int notifications_count;
+    public double volume;
+    public int shuffle;
+    public int repeat;
 
     public signal void played ();
     public signal void paused ();
     public signal void changed ();
+    public signal void notification_count_changed (int count);
 
     string PLAY_JS = "R.Services.Player.play();";
     string PAUSE_JS = "R.Services.Player.pause();";
     string NEXT_JS = "R.Services.Player.next();";
     string PREVIOUS_JS = "R.Services.Player.previous();";
+    string VOLUME_JS = "R.Services.Player.setVolume(%f);";
+    string REPEAT_JS = "R.Services.Player.setRepeat(%d);";
+    string SHUFFLE_JS = "R.Services.Player.setShuffle(%d);";
+    string SEEK_JS = "R.Services.Player.seek (%d);";
 
     string JS = """
         var playingTrack = R.Services.Player.model.get('playingTrack').attributes; 
@@ -23,15 +33,29 @@ public class Rdio.Middleware : GLib.Object {
         var album = playingTrack.album;
         var artist = playingTrack.artist;
         var song = playingTrack.name;
+        var duration = playingTrack.duration;
 
-        var play_state = R.Services.Player.model.attributes.playState;
+        var playerAttributes = R.Services.Player.model.attributes;
+        var play_state = playerAttributes.playState;
+        var shuffle = playerAttributes.shuffle;
+        var repeat = playerAttributes.repeat;
+        var volume = playerAttributes.volume;
+        var position = playerAttributes.position;
+
+        var notifications_count = R.currentUser.attributes.unreadNotificationsCount;
 
         var rv = {
           'song': song,
           'album': album,
           'artist': artist,
           'album_art': album_art,
-          'play_state': play_state
+          'duration': duration,
+          'play_state': play_state,
+          'shuffle': shuffle,
+          'repeat': repeat,
+          'volume': volume,
+          'position': position,
+          'notifications_count': notifications_count
         };
 
         alert(JSON.stringify(rv));
@@ -82,6 +106,22 @@ public class Rdio.Middleware : GLib.Object {
         webview.execute_script (PREVIOUS_JS);
     }
 
+    public void set_volume (double volume) {
+        webview.execute_script (VOLUME_JS.printf (volume));
+    }
+
+    public void set_shuffle (int shuffle) {
+        webview.execute_script (SHUFFLE_JS.printf (shuffle));
+    }
+
+    public void set_repeat (int repeat) {
+        webview.execute_script (REPEAT_JS.printf (repeat));
+    }
+
+    public void seek (int position) {
+        webview.execute_script (SEEK_JS.printf (position));
+    }
+
     /** This is how the javascript communicates with vala.
      * JS sends alert() messages containing JSON data which
      * we can then intercept here
@@ -95,8 +135,14 @@ public class Rdio.Middleware : GLib.Object {
             var title = root.get_string_member("song");
             var album = root.get_string_member("album");
             var artist = root.get_string_member("artist");
-            var playing = root.get_int_member("play_state") == 1;
             var album_art = root.get_string_member("album_art");
+            var duration = (int) root.get_int_member ("duration");
+            var playing = root.get_int_member("play_state") == 1;
+            var shuffle = (int) root.get_int_member ("shuffle");
+            var repeat = (int) root.get_int_member ("repeat");
+            var position = (int) root.get_int_member ("position");
+            var volume = (double)root.get_double_member ("volume");
+            var notifications_count = (int) root.get_int_member("notifications_count");
 
             // Find out if anything changed and send appropiate signals
             if (this.title != title || this.album != album || this.artist != artist) {
@@ -104,6 +150,7 @@ public class Rdio.Middleware : GLib.Object {
                 this.album = album;
                 this.artist = artist;
                 this.album_art = album_art;
+                this.duration = duration;
 
                 changed ();
             }
@@ -115,6 +162,16 @@ public class Rdio.Middleware : GLib.Object {
                 else
                     paused ();
             }
+            if (this.notifications_count != notifications_count) {
+                this.notifications_count = notifications_count;
+
+                notification_count_changed (this.notifications_count);
+            }
+
+            this.shuffle = shuffle;
+            this.repeat = repeat;
+            this.position = position;
+            this.volume = volume;
         } catch (Error e) {
             GLib.critical ("Error receiving json update");
         }

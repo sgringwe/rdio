@@ -259,7 +259,6 @@ public class Rdio.MprisPlayer : GLib.Object {
     update_metadata_source = Timeout.add(300, () => {
       //print("trigger_metadata_update %s\n", global.current_artist);
       Variant variant = this.PlaybackStatus;
-      warning("Playing is %s", App.middleware.playing.to_string());
       
       queue_property_for_notification("PlaybackStatus", variant);
       queue_property_for_notification("Metadata", _metadata);
@@ -324,34 +323,32 @@ public class Rdio.MprisPlayer : GLib.Object {
   
   public string LoopStatus {
     owned get {
-      // switch((PlaybackInterface.RepeatMode)Rdio.App.settings.main.repeat_mode) {
-      //   case(PlaybackInterface.RepeatMode.OFF):
-      //     return "None";
-      //   case(PlaybackInterface.RepeatMode.MEDIA):
-      //     return "Track";
-      //   case(PlaybackInterface.RepeatMode.ALBUM):
-      //   case(PlaybackInterface.RepeatMode.ARTIST):
-      //   case(PlaybackInterface.RepeatMode.ALL):
-      //     return "Playlist";
-      // }
+      switch(App.middleware.repeat) {
+        case(0):
+          return "None";
+        case(1):
+          return "Track";
+        case(2):
+          return "Playlist";
+      }
       
       return "Playlist";
     }
     set {
-      // switch(value) {
-      //   case("None"):
-      //     Rdio.App.settings.main.repeat_mode = (int)PlaybackInterface.RepeatMode.OFF;
-      //     break;
-      //   case("Track"):
-      //     Rdio.App.settings.main.repeat_mode = (int)PlaybackInterface.RepeatMode.MEDIA;
-      //     break;
-      //   case("Playlist"):
-      //     Rdio.App.settings.main.repeat_mode = (int)PlaybackInterface.RepeatMode.ALL;
-      //     break;
-      //   default:
-      //     Rdio.App.settings.main.repeat_mode = (int)PlaybackInterface.RepeatMode.ALL;
-      //     break;
-      // }
+      switch(value) {
+        case("None"):
+          App.middleware.set_repeat (0);
+          break;
+        case("Track"):
+          App.middleware.set_repeat (1);
+          break;
+        case("Playlist"):
+          App.middleware.set_repeat (2);
+          break;
+        default:
+          App.middleware.set_repeat (2);
+          break;
+      }
       
       Variant variant = value;
       queue_property_for_notification("LoopStatus", variant);
@@ -368,15 +365,15 @@ public class Rdio.MprisPlayer : GLib.Object {
   
   public bool Shuffle {
     get {
-      return false;//(Rdio.App.settings.main.shuffle_mode == PlaybackInterface.ShuffleMode.ALL);
+      return App.middleware.shuffle == 1;
     }
     set {
-      // if(value) {
-      //   App.playback.set_shuffle_mode(PlaybackInterface.ShuffleMode.ALL);
-      // }
-      // else {
-      //   App.playback.set_shuffle_mode(PlaybackInterface.ShuffleMode.OFF);
-      // }
+      if(value) {
+        App.middleware.set_shuffle (1);
+      }
+      else {
+        App.middleware.set_shuffle (0);
+      }
       
       Variant variant = value;
       queue_property_for_notification("Shuffle", variant);
@@ -385,16 +382,7 @@ public class Rdio.MprisPlayer : GLib.Object {
   
   public HashTable<string,Variant>? Metadata { //a{sv}
     owned get {
-      // Rdio.Media s = App.playback.current_media;
-      // if(s == null)
-      //   return _metadata;
-      
-      // string[] artistArray = {};
-      // artistArray += s.artist;
-      // string[] genreArray = {};
-      // genreArray += s.genre;
-      
-      // fill_metadata(s);
+      fill_metadata();
       
       return _metadata;
     }
@@ -402,16 +390,16 @@ public class Rdio.MprisPlayer : GLib.Object {
   
   public double Volume {
     get{
-      return 1.0;//App.playback.get_volume();
+      return App.middleware.volume;
     }
     set {
-      // App.playback.set_volume(value);
+      App.middleware.set_volume (value);
     }
   }
   
   public int64 Position {
     get {
-      return 0;//(App.playback.get_position()/1000);
+      return App.middleware.position;
     }
   }
   
@@ -482,7 +470,7 @@ public class Rdio.MprisPlayer : GLib.Object {
   }
   
   public void Stop() {
-    // App.playback.stop_playback();
+    
   }
   
   public void Play() {
@@ -498,19 +486,19 @@ public class Rdio.MprisPlayer : GLib.Object {
    * @arg Offset    The number of microseconds to seek forward.
    */
   public void Seek(int64 Offset) {
-    // int64 Position = App.playback.get_position() / 1000;
-    // Position += Offset;
-    // if (Position < 0) {
-    //   Position = 0;
-    // }
-    // if (Position < App.playback.get_duration() / 1000) {
-    //   debug("Seek to position %llu usec", Position);
-    //   App.playback.set_position(Position * 1000);
-    // }
-    // else {
-    //   debug("Seek requested beyond current playing track: will load next track");
-    //   App.playback.request_next();
-    // }
+    int Position = (int) App.middleware.position;
+    Position += (int) (Offset / 1000);
+    if (Position < 0) {
+      Position = 0;
+    }
+    if (Position < App.middleware.duration) {
+      debug("Seek to position %i usec", Position);
+      App.middleware.seek(Position);
+    }
+    else {
+      debug("Seek requested beyond current playing track: will load next track");
+      App.middleware.next ();
+    }
   }
   
   /*
@@ -524,10 +512,10 @@ public class Rdio.MprisPlayer : GLib.Object {
    * @args Position Track position in microseconds. This must be between 0 and <track_length>.
    */
   public void SetPosition(string TrackId, int64 Position) {
-    // debug ("Setting position fro track %s", TrackId);
-    // if ((Position > 0) && (Position < App.playback.get_duration() / 1000)) {
-    //   App.playback.set_position(Position * 1000);
-    // }
+    debug ("Setting position fro track %s", TrackId);
+    if ((Position > 0) && (Position < App.middleware.duration / 1000)) {
+      App.middleware.seek ((int)(Position / 1000));
+    }
   }
   
   public void OpenUri(string Uri) {

@@ -14,6 +14,7 @@ vala_precompile(VALA_C
     MediaKeyListener.vala
     MPRIS.vala
     SoundMenuIntegration.vala
+    UnityIntegration.vala
     
 PACKAGES
     glib-2.0

@@ -34,6 +34,10 @@ public class Rdio.App : Gtk.Application {
   public static Rdio.Settings settings { get; private set; }
   public static Rdio.MediaKeyListener mkl { get; private set; }
 
+  #if HAVE_UNITY
+  public static Rdio.UnityIntegration unity { get; private set; }
+  #endif
+
   #if HAVE_INDICATE
   public static Rdio.SoundMenuIntegration sound_menu { get; private set; }
   #endif
@@ -52,6 +56,11 @@ public class Rdio.App : Gtk.Application {
     debug("Initializing SoundMenu integration\n");
     sound_menu = new Rdio.SoundMenuIntegration();
     sound_menu.initialize();
+    #endif
+
+    #if HAVE_UNITY
+    unity = new Rdio.UnityIntegration ();
+    unity.initialize ();
     #endif
 
     window.initialize_events ();
