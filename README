@@ -1,2 +1,9 @@
-This is a "native" rdio client for linux (ubuntu/debian). It (will) provide support
-for media key listening, sound menu, libunity dock integration and other native implementations.
+This is a "native" rdio client for linux (ubuntu/debian). It provides support
+for:
+
+* media key controls
+* sound menu
+* libunity dock integration
+* libnotify notificaitons on song change
+
+You can download .deb files or add a PPA at https://code.launchpad.net/~sgringwe/+archive/rdio.

@@ -4,7 +4,6 @@ ensure_vala_version("0.17.5" MINIMUM)
 include(ValaPrecompile)
 
 vala_precompile(VALA_C
-    main.vala
     config.vala
     Rdio.vala
     Settings.vala

@@ -24,16 +24,16 @@ public class Rdio.Middleware : GLib.Object {
 	WebKit.WebView webview;
 
 	public bool playing;
-	public string title;
-	public string album;
-	public string artist;
-	public string album_art;
-	public int duration;
-	public int position;
-	public int notifications_count;
-	public double volume;
-	public int shuffle;
-	public int repeat;
+	public string title = "Title";
+	public string album = "Album";
+	public string artist = "Artist";
+	public string album_art = "";
+	public int duration = 0;
+	public int position = 0;
+	public int notifications_count = 0;
+	public double volume = 1.0;
+	public int shuffle = 0;
+	public int repeat = 0;
 
 	public signal void played ();
 	public signal void paused ();

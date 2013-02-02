@@ -40,6 +40,18 @@ public class Rdio.App : Gtk.Application {
 	#endif
 
 	public App () {
+		application_id = "apps.rdio";
+	}
+	
+	protected override void activate () {
+		message ("at activate ");
+		unowned List<Gtk.Window> windows = get_windows ();
+		if (windows != null) {
+			windows.data.present ();
+			return;
+		}
+		
+		message ("initializing ");
 		settings = new Rdio.Settings ();
 		window = new Rdio.Window (this);
 		middleware = new Rdio.Middleware (window.webview);
@@ -65,16 +77,30 @@ public class Rdio.App : Gtk.Application {
 		#endif
 
 		window.initialize_events ();
+		window.set_application (this);
 
 		window.destroy.connect (Gtk.main_quit);
-		Gtk.main ();
 	}
 
-	protected override void activate () {
-		if (window != null) {
-			window.present ();
-			return;
-		}
+	protected override void shutdown ()
+	{
+		base.shutdown();
 	}
+}
+
+public static int main (string[] args) {
+	Gtk.init(ref args);
+	Environment.set_prgname ("rdio");
+  
+    // Init internationalization support before anything else
+    string package_name = Build.GETTEXT_PACKAGE;
+    string langpack_dir = Path.build_filename (Build.DATADIR, "locale");
+    Intl.setlocale (LocaleCategory.ALL, "");
+    Intl.bindtextdomain (package_name, langpack_dir);
+    Intl.bind_textdomain_codeset (package_name, "UTF-8");
+    Intl.textdomain (package_name);
+  
+	var app = new Rdio.App ();
+	return app.run (args);
 }
 

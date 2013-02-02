@@ -32,7 +32,7 @@ public class Rdio.Window : Gtk.Window {
 	bool window_maximized;
 
 	public Window (Gtk.Application gtk_app) {
-		app = gtk_app;
+		set_application (app);
 
 		// Window styling
 		// set_app_paintable (true);
@@ -60,9 +60,10 @@ public class Rdio.Window : Gtk.Window {
 
 		// Configure the browser
 		var settings = webview.get_settings ();
-		settings.set_property ("enable-plugins", true);
-		settings.set_property ("enable-private-browsing", true);
-		settings.set_property ("enable-page-cache", true);
+		settings.enable_plugins = true;
+		settings.enable_private_browsing = true;
+		settings.enable_page_cache = true;
+		settings.enable_default_context_menu = false;
 		webview.set_settings (settings);
 
 		setup_cookies ();
@@ -121,7 +122,9 @@ public class Rdio.Window : Gtk.Window {
 		window_state_event.disconnect(window_state_changed);
 
 		// Terminate Libnotify
-		// Notify.uninit ();
+		#if HAVE_LIBNOTIFY
+		Notify.uninit ();
+		#endif
 		
 		// Save UI Information
 		if (window_maximized) {

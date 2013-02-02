@@ -222,7 +222,6 @@ public class Rdio.MprisPlayer : GLib.Object {
 	// }
 
 	private void fill_metadata() {
-		warning("filling up metadata now----- %s %s %s\n\n\n", App.middleware.title, App.middleware.artist, "album");
 		string[] artistArray = {};
 		artistArray += App.middleware.artist;
 		string[] genreArray = {};
