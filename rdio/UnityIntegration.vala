@@ -38,7 +38,7 @@ public class Rdio.UnityIntegration : GLib.Object {
 	// TODO: Use actions list of actions to create these
 	// dbus menu items rather than creating custom ones.
 	public bool initialize() {
-		entry = Unity.LauncherEntry.get_for_desktop_file("Rdio.desktop");
+		entry = Unity.LauncherEntry.get_for_desktop_file("rdio.desktop");
 		if(entry == null)
 			return false;
 		
