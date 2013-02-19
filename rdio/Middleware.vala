@@ -83,6 +83,22 @@ public class Rdio.Middleware : GLib.Object {
 		alert(JSON.stringify(rv));
 	""";
 
+	string INJECTED_CONTROLS = """<nav class="ViewToggle clearfix" style="float: left; margin: 20px 0px 20px 25px;"><ul><li class="first"><a href="#" onclick="history.back();">&lt;</a></li><li class="last"><a href="#" onclick="history.forward();">&gt;</a></li></ul></nav>""";
+
+	string INJECT_JS = """
+		var timer = null;
+		timer = setInterval(function(){
+            if ($('#header')) {
+				console.log('injecting into header');
+				$('#header').prepend('%s');
+                clearInterval(timer);  
+            }
+            else {
+				console.log('waiting...');
+			}
+        },50);
+	""";
+
 	public Middleware (WebKit.WebView view) {
 		webview = view;
 		playing = false;
@@ -103,6 +119,15 @@ public class Rdio.Middleware : GLib.Object {
 
 		webview.execute_script (jquery_contents);
 		webview.execute_script (JS);
+		
+		Timeout.add(15000, () => {
+			stdout.printf("injecting!!!!!!!!!!!!\n");
+			stdout.printf(INJECT_JS.printf ("<p>hi</p>"));
+			stdout.printf(INJECT_JS.printf (INJECTED_CONTROLS));
+			webview.execute_script (INJECT_JS.printf (INJECTED_CONTROLS));
+			stdout.printf("injected...................\n");
+			return false;
+		});
 
 		webview.script_alert.connect (alert);
 
