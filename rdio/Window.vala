@@ -30,6 +30,18 @@ public class Rdio.Window : Gtk.Window {
 	Gtk.ScrolledWindow scrolled_window;
 
 	bool window_maximized;
+    
+    string INJECTED_CONTROLS = """<nav id="injectedNavigationControls" class="ViewToggle clearfix" style="float: left; margin: 20px 0px 20px 25px;"><ul><li class="first"><a href="#" onclick="history.back();">&lt;</a></li><li class="last"><a href="#" onclick="history.forward();">&gt;</a></li></ul></nav>""";
+    
+	string INJECT_JS = """
+		var timer = null;
+		timer = setInterval(function(){
+            if ($('#injectedNavigationControls').length == 0) {
+				$('#header').prepend('%s');
+				console.log('injecting into header');
+            }
+        },1000);
+	""";
 
 	public Window (Gtk.Application gtk_app) {
 		set_application (app);
@@ -67,7 +79,7 @@ public class Rdio.Window : Gtk.Window {
 		webview.set_settings (settings);
 
 		setup_cookies ();
-		webview.open ("https://www.rdio.com/signin/");
+		webview.open ("https://www.rdio.com/browse/charts/albums/");
 
 		set_default_size (App.settings.window_width, App.settings.window_height);
 		if (App.settings.window_state == Settings.WindowState.MAXIMIZED) {
@@ -79,6 +91,17 @@ public class Rdio.Window : Gtk.Window {
 
 		destroy.connect (on_quit);
 		window_state_event.connect(window_state_changed);
+		webview.load_finished.connect (load_finished);
+	}
+	
+	void load_finished(WebKit.WebFrame frame) {
+        
+        // This is crap. this call back is called ~3 times and so we have a js loop
+        // going 3 times every second. But Rdio is kind of crappy because we can't
+        // just listen to dom ready since all loading is done dynamically.
+        // So, we have 3 js loops waiting and if it notices the nav is missing
+        // it re-injects it.
+        webview.execute_script (INJECT_JS.printf (INJECTED_CONTROLS));
 	}
 
 	public void initialize_events () {

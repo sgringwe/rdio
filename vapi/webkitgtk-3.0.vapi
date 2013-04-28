@@ -107,6 +107,7 @@ namespace WebKit {
     public unowned WebKit.DOMNodeList query_selector_all (string selectors) throws GLib.Error;
     public string get_cookie () throws GLib.Error;
     public void set_cookie (string cookie) throws GLib.Error;
+    public unowned WebKit.DOMCSSStyleDeclaration create_css_style_declaration ();
     public WebKit.DOMHTMLCollection anchors { get; }
     public WebKit.DOMHTMLCollection applets { get; }
     public WebKit.DOMHTMLElement body { get; }
@@ -114,6 +115,19 @@ namespace WebKit {
     public WebKit.DOMHTMLElement head { get; }
     public WebKit.DOMHTMLCollection images { get; }
     public WebKit.DOMHTMLCollection links { get; }
+  }
+  [CCode (cheader_filename = "webkit/webkit.h")]
+  public class DOMObject : GLib.Object {
+    [CCode (has_construct_function = false)]
+    protected DOMObject ();
+  }
+  [CCode (cheader_filename = "webkit/webkit.h")]
+  public class DOMCSSStyleDeclaration : WebKit.DOMObject {
+    [CCode (has_construct_function = false)]
+    protected DOMCSSStyleDeclaration ();
+    public unowned string get_css_text ();
+    public void set_css_text (string value) throws GLib.Error;
+    public string css_text { set; get; }
   }
   [CCode (cheader_filename = "webkit/webkit.h")]
   public class DOMElement : WebKit.DOMNode {
