@@ -23,7 +23,9 @@ namespace Rdio.Utils {
             var resolver = Resolver.get_default ();
             var addresses = resolver.lookup_by_name (host, null);
             var address = addresses.nth_data (0);
-
+            if (address == null) {
+                return false;
+            }
         } catch (Error e) {
             debug ("%s\n", e.message);
             return false;

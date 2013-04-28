@@ -103,11 +103,6 @@ public class Rdio.Middleware : GLib.Object {
 
 		webview.execute_script (jquery_contents);
 		webview.execute_script (JS);
-		
-		//Timeout.add(15000, () => {
-            
-			//return false;
-		//});
 
 		webview.script_alert.connect (alert);
 
