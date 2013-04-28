@@ -10,11 +10,14 @@ vala_precompile(VALA_C
     Window.vala
     Middleware.vala
     CustomTitleBar.vala
+    OverlayLabel.vala
     MediaKeyListener.vala
     MPRIS.vala
     SoundMenuIntegration.vala
     UnityIntegration.vala
     Notifier.vala
+    
+    Utils/Networking.vala
     
 PACKAGES
     glib-2.0

@@ -26,6 +26,7 @@ public class Rdio.Window : Gtk.Window {
 	public static Gtk.Application app { get; private set; }
 	
 	TopGradient titlebar;
+    OverlayLabel overlay_label;
 	public WebKit.WebView webview;
 	Gtk.ScrolledWindow scrolled_window;
 
@@ -56,7 +57,8 @@ public class Rdio.Window : Gtk.Window {
 		// TODO: Save window size in dconf
 		window_position = Gtk.WindowPosition.CENTER;
 		set_default_size (1400, 700);
-
+        
+        Overlay overlay = new Overlay();
 		Box box = new Box (Orientation.VERTICAL, 0);
 		titlebar = new TopGradient ();
 		webview = new WebKit.WebView ();
@@ -67,8 +69,9 @@ public class Rdio.Window : Gtk.Window {
 
 		box.pack_start (titlebar, false, false, 0);
 		box.pack_end (scrolled_window, true, true, 0);
-
-		add (box);
+        
+        overlay.add (box);
+		add (overlay);
 
 		// Configure the browser
 		var settings = webview.get_settings ();
@@ -86,13 +89,33 @@ public class Rdio.Window : Gtk.Window {
 		  window_maximized = true;
 		  maximize();
 		}
+        
+        overlay_label = new Rdio.OverlayLabel("No Internet Connection");
+        overlay.add_overlay (overlay_label);
 
 		show_all();
 
 		destroy.connect (on_quit);
 		window_state_event.connect(window_state_changed);
 		webview.load_finished.connect (load_finished);
+        
+        // Check internet connection every 15 seconds
+        check_internet_connection ();
+        Timeout.add(15000, () => {
+			check_internet_connection ();
+			return true;
+		});
 	}
+    
+    void check_internet_connection () {
+        if (Rdio.Utils.check_internet_connection()) {
+            overlay_label.set_visible (false);
+        }
+        else {
+            overlay_label.set_visible (true);
+        }
+        //overlay_label.set_visible (true);
+    }
 	
 	void load_finished(WebKit.WebFrame frame) {
         
