@@ -1,4 +1,4 @@
-This is a "native" rdio client for ubuntu. It provides support
+This is a "native" rdio client for ubuntu (can potentially build from source on other distros). It provides support
 for:
 
 * media key controls
