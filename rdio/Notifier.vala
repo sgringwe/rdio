@@ -47,7 +47,7 @@ public class Rdio.Notifier : GLib.Object {
 	public void show_notification(string title, string sub_title, Gdk.Pixbuf? pixbuf) {
 		try {
 			if (Notify.is_initted ()) {
-				notification.set_timeout(1);
+				notification.set_timeout (Notify.EXPIRES_DEFAULT);
 				
 				notification.update(title, sub_title, "rdio");
 				
@@ -57,7 +57,6 @@ public class Rdio.Notifier : GLib.Object {
 				//	 notification.set_image_from_pixbuf(App.icons.BEATBOX.render (Gtk.IconSize.DIALOG));
 				
 				notification.show();
-				notification.set_timeout (Notify.EXPIRES_DEFAULT);
 			}
 		}
 		catch (GLib.Error err) {
